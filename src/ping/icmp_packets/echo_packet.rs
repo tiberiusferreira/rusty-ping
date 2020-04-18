@@ -2,7 +2,7 @@
 /// Note that both ICMPv4 or ICMPv6 use big endian for the headers
 /// This Packet is structured according to https://tools.ietf.org/html/rfc792,
 /// in special the "Echo or Echo Reply Message" section
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct ICMPv4EchoPacketStruct {
     /// Packet Type, for ICMP Echo Request is 8 and for reply 0
     p_type: u8,
@@ -47,6 +47,7 @@ impl ICMPv4EchoPacketStruct {
         pkt_no_checksum
     }
 
+
     pub fn sequence(&self) -> u16{
         self.sequence
     }
@@ -84,6 +85,7 @@ impl ICMPv4EchoPacketStruct {
         buffer
     }
 
+    #[allow(unused)]
     pub fn from_bytes(slice: &[u8]) -> Self {
         assert!(slice.len() <= 576, "Datagram over 576 bytes!");
         Self {
