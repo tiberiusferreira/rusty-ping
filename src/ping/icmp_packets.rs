@@ -1,12 +1,12 @@
-use crate::ping::icmp_packets::time_exceeded_packet::ICMPv4TimeExceededPacketStruct;
+pub use crate::ping::icmp_packets::time_exceeded_packet::ICMPv4TimeExceededPacketStruct;
 use crate::ping::icmp_packets::PossibleIcmpPackets::InvalidPacket;
 pub use echo_packet::ICMPv4EchoPacketStruct;
 use internet_checksum::Checksum;
 use serde::ser::{SerializeSeq, SerializeStruct};
 use serde::{Serialize, Serializer};
-
 mod echo_packet;
 mod time_exceeded_packet;
+
 #[derive(Debug)]
 pub enum PossibleIcmpPackets {
     ICMPv4EchoPacket(ICMPv4EchoPacketStruct),
@@ -15,6 +15,8 @@ pub enum PossibleIcmpPackets {
     InvalidPacket,
     UnknownPacket,
 }
+
+
 
 #[derive(Debug)]
 pub struct ICMPv4GenericPacket {
@@ -52,18 +54,13 @@ impl ICMPv4GenericPacket {
                 let id = u16::from_be_bytes([rest_header_bytes[0], rest_header_bytes[1]]);
                 let sequence = u16::from_be_bytes([rest_header_bytes[2], rest_header_bytes[3]]);
                 let pkt =
-                    ICMPv4EchoPacketStruct::new(self.p_type, self.code, id, sequence, &self.data);
+                    ICMPv4EchoPacketStruct::new(self.p_type, self.code, id, Some(self.checksum), sequence, &self.data);
+                if !pkt.valid_checksum(){
+                    return PossibleIcmpPackets::InvalidPacket;
+                }
                 PossibleIcmpPackets::ICMPv4EchoPacket(pkt)
             }
             (11, code) => {
-                if !ICMPv4TimeExceededPacketStruct::verify_valid_packet(
-                    self.p_type,
-                    self.code,
-                    self.checksum,
-                    &self.data,
-                ) {
-                    return PossibleIcmpPackets::InvalidPacket;
-                }
                 return match code {
                     0 => PossibleIcmpPackets::ICMPv4TimeExceededPacketTtlExceeded,
                     1 => {

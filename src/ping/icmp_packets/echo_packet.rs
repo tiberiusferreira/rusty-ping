@@ -26,26 +26,38 @@ pub struct ICMPv4EchoPacketStruct {
 }
 
 impl ICMPv4EchoPacketStruct {
-    pub fn new(p_type: u8, code: u8, id: u16, sequence: u16, data: &[u8]) -> Self {
+    /// If checksum is None, calculates it, otherwise uses the one provided
+    pub fn new(p_type: u8, code: u8, id: u16, checksum: Option<u16>, sequence: u16, data: &[u8]) -> Self {
         assert!(
             data.len() <= 568,
             "Can't create a ICMP datagram over 576 bytes!"
         );
+
         let mut pkt_no_checksum = ICMPv4EchoPacketStruct {
             p_type,
             code,
-            checksum: 0,
+            checksum: checksum.unwrap_or(0),
             id,
             sequence,
             data: data.to_vec(),
         };
-        pkt_no_checksum.fill_checksum();
+        if checksum.is_none(){
+            pkt_no_checksum.fill_checksum();
+        }
         pkt_no_checksum
+    }
+
+    pub fn sequence(&self) -> u16{
+        self.sequence
     }
 
     /// This function already takes care of endianness
     pub fn fill_checksum(&mut self) {
         self.checksum = self.checksum();
+    }
+
+    pub fn valid_checksum(&self) -> bool{
+        self.checksum == self.checksum()
     }
 
     /// This function already takes care of endianness
@@ -74,8 +86,6 @@ impl ICMPv4EchoPacketStruct {
 
     pub fn from_bytes(slice: &[u8]) -> Self {
         assert!(slice.len() <= 576, "Datagram over 576 bytes!");
-        println!("{:X?}", u16::from_be_bytes([slice[6], slice[7]]));
-        println!("{:?}", u16::from_le(1));
         Self {
             p_type: slice[0],
             code: slice[1],
