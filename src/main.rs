@@ -6,7 +6,7 @@ use ping::*;
 use std::process::exit;
 use std::thread::sleep;
 use structopt::StructOpt;
-use std::sync::atomic::{AtomicU16, Ordering};
+use std::sync::atomic::{AtomicU16};
 use std::sync::Arc;
 
 #[derive(StructOpt, Debug)]
@@ -57,9 +57,9 @@ fn main() {
         }
     };
     // These are atomic because they are "shared" with the ctrlc handler
-    let mut total_pings_sent: Arc<AtomicU16> = Arc::new(AtomicU16::new(0));
-    let mut total_pings_received: Arc<AtomicU16> = Arc::new(AtomicU16::new(0));
-    let mut avg_ping: Arc<AtomicU16> = Arc::new(AtomicU16::new(0));
+    let total_pings_sent: Arc<AtomicU16> = Arc::new(AtomicU16::new(0));
+    let total_pings_received: Arc<AtomicU16> = Arc::new(AtomicU16::new(0));
+    let avg_ping: Arc<AtomicU16> = Arc::new(AtomicU16::new(0));
     let handler_sent = total_pings_sent.clone();
     let handler_lost = total_pings_received.clone();
     let handler_avg_ping = avg_ping.clone();
