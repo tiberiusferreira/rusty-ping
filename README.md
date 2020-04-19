@@ -1,7 +1,7 @@
 # Cloudflare Internship Application: Systems
 
 
-![CLI Screenshot](https://github.com/tiberiusferreira/cloudflare-ping/blob/master/screenshots/main.png "CLI Screenshot")
+![CLI Screenshot](./screenshots/main.png "CLI Screenshot")
 
 ## What is it?
 
