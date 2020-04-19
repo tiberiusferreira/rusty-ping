@@ -39,6 +39,7 @@ pub struct PingResponseData {
 }
 
 impl Pinger {
+    /// Only IPv4 supported for now
     pub fn new(ttl: u8, ip_version: IpVersion, timeout: Duration) -> Result<Self, PingSetupError> {
         let socket = match ip_version {
             IpVersion::V4 => Socket::new(Domain::ipv4(), Type::raw(), Some(Protocol::icmpv4()))
@@ -61,7 +62,7 @@ impl Pinger {
         self.socket.set_read_timeout(Some(timeout)).map_err(|e| PingSetupError::SocketTimeoutSetError(e.to_string()))
     }
 
-
+    /// Sends ping to given address with given sequence number
     pub fn send_ping(&self, address: SocketAddr, sequence: u16) -> Result<usize, PingNetworkError> {
         let process_id = std::process::id() as u16;
         let echo_requect_pkt =
@@ -73,7 +74,7 @@ impl Pinger {
         Ok(nb_bytes_sent)
     }
 
-    /// Waits for a ping response with matching ping_id
+    /// Waits a response on the socket and tries to parse it to an ICMP Packet
     pub fn get_ping_response(&self) -> Result<PingResponseData, PingNetworkError> {
         // IPv4 header max size (with options) is 32 bytes and max ICMP datagram size is 576
         // we add one more byte to make sure the server did not send over 32 + 576 bytes.
