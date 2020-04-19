@@ -16,11 +16,11 @@ struct CliOptions {
     #[structopt(short, long, default_value = "64")]
     ttl: u8,
 
-    /// Set timeout, how long to wait for ping responses
+    /// Set timeout, how long to wait for ping responses in milliseconds
     #[structopt(long, default_value = "1000")]
     timeout: u64,
 
-    /// Set time to wait between ping attempts
+    /// Set time to wait between ping attempts in milliseconds
     #[structopt(long, default_value = "1000")]
     time_between_pings: u64,
 
