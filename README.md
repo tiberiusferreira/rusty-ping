@@ -8,20 +8,20 @@
 This is a small Ping CLI application for MacOS and Linux implemented in Rust. It accepts a hostname or an IP address as its argument, then send ICMP "echo requests" in a loop to the target while receiving "echo reply" messages.
 
 It displays when a ping request, times out:
-![Timeout](https://github.com/tiberiusferreira/cloudflare-ping/blob/master/screenshots/timeout.png "Timeout")
+![Timeout](./screenshots/timeout.png "Timeout")
 
 When the response is from a past ping request (Expired)
-![Expired](https://github.com/tiberiusferreira/cloudflare-ping/blob/master/screenshots/expired_response.png "Expired")
+![Expired](./screenshots/expired_response.png "Expired")
 
 When the response is a TTL expired one (but it still waits until timeout for a correct response, just in case)
-![TTL exceeded](https://github.com/tiberiusferreira/cloudflare-ping/blob/master/screenshots/ttl_exceeded.png "TTL exceeded")
+![TTL exceeded](./screenshots/ttl_exceeded.png "TTL exceeded")
 
 When the response is correct
-![Correct Response](https://github.com/tiberiusferreira/cloudflare-ping/blob/master/screenshots/correct.png
+![Correct Response](./screenshots/correct.png
  "Correct Response")
 
 Uppon receiving SIGINT (Control + C) displays pings statistics
-![Packet Statistics](https://github.com/tiberiusferreira/cloudflare-ping/blob/master/screenshots/stats.png
+![Packet Statistics](./screenshots/stats.png
  "Statistics")
 
 
@@ -49,7 +49,7 @@ From the original task:
 
 The second point was added, but the first one was very difficult since my ISP does not provide IPv6 support as shown by a screenshot from https://ipv6-test.com/, so only IPv4 is supported:
 
-![IPv6 Support](https://github.com/tiberiusferreira/cloudflare-ping/blob/master/screenshots/ipv6.png
+![IPv6 Support](./screenshots/ipv6.png
  "IPv6 Support")
 
 
