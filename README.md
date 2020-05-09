@@ -5,7 +5,7 @@
 
 ## What is it?
 
-This was initially a small Ping CLI application for MacOS and Linux implemented in Rust for the Cloudflare internship, but is just a fun side project. It accepts a hostname or an IP address as its argument, then send ICMP "echo requests" in a loop to the target while receiving "echo reply" messages.
+This was initially a small Ping CLI application for MacOS and Linux implemented in Rust for the Cloudflare internship, but now it is just a fun side project. It accepts a hostname or an IP address as its argument, then send ICMP "echo requests" in a loop to the target while receiving "echo reply" messages.
 
 It displays when a ping request, times out:
 ![Timeout](./screenshots/timeout.png "Timeout")
